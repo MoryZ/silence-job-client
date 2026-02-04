@@ -1,0 +1,3 @@
+com.old.silence.job.client.starter.SilenceJobClientCommonAutoConfiguration
+com.old.silence.job.client.starter.SilenceJobClientJobCoreAutoConfiguration
+com.old.silence.job.client.starter.SilenceJobClientRetryCoreAutoConfiguration

@@ -1,0 +1,2 @@
+com.old.silence.job.client.retry.core.serializer.HessianSerializer
+com.old.silence.job.client.retry.core.serializer.JacksonSerializer
