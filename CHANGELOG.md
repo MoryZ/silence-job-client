@@ -1,6 +1,14 @@
-# Changelog
+## [1.8.0-SNAPSHOT] - 2026-03-17
 
-All notable changes to this project will be documented in this file.
+### Features
+- **独立执行器应用**: 新增 `silence-job-client-executor` 模块，支持独立部署的客户端执行器
+- 自动配置独立部署模式
+- 支持多实例水平扩展
+- 健康检查和监控端点
+
+### Changes
+- 版本号统一为 1.8.0-SNAPSHOT
+- 优化模块依赖关系
 
 ## [1.5.0] - 2024-02-04
 

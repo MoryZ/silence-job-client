@@ -3,16 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
         <groupId>com.old.silence</groupId>
         <artifactId>silence-job-client</artifactId>
         <version>1.8.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>silence-job-client-starter</artifactId>
-    <name>SilenceJob Client Starter</name>
-    <description>Spring Boot Starter for SilenceJob Client auto-configuration</description>
+    <artifactId>silence-job-client-executor</artifactId>
+    <name>SilenceJob Client Executor</name>
+    <description>Standalone SilenceJob Client Executor Application</description>
 
     <dependencies>
         <!-- Spring Boot -->
@@ -20,8 +20,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        
+
         <!-- SilenceJob Client Modules -->
+        <dependency>
+            <groupId>com.old.silence</groupId>
+            <artifactId>silence-job-client-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.old.silence</groupId>
             <artifactId>silence-job-client-common</artifactId>
@@ -29,25 +33,29 @@
         <dependency>
             <groupId>com.old.silence</groupId>
             <artifactId>silence-job-client-job-core</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.old.silence</groupId>
             <artifactId>silence-job-client-retry-core</artifactId>
-            <optional>true</optional>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.errorprone</groupId>
-                    <artifactId>error_prone_annotations</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
-        
-        <!-- Spring Framework -->
+
+        <!-- Spring Boot Actuator for health checks -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.old.silence.job.client.executor.SilenceJobClientExecutorApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

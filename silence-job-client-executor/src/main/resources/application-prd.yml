@@ -1,0 +1,29 @@
+# SilenceJob Client Executor Production Configuration
+
+server:
+  port: 9999
+
+spring:
+  profiles:
+    active: prd
+
+silence:
+  job:
+    client:
+      server-url: http://silence-job-server:8098
+      app-name: silence-job-client-executor
+      executor:
+        port: 9999
+        thread-pool-size: 20
+        queue-size: 500
+      retry:
+        enabled: true
+        max-attempts: 5
+      heartbeat:
+        interval: 15s
+        timeout: 5s
+
+logging:
+  level:
+    com.old.silence.job: WARN
+    org.springframework: WARN

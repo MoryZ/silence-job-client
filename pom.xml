@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>silence-job-client</artifactId>
-    <version>1.5.0</version>
+    <version>1.8.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>SilenceJob Client</name>
     <description>Distributed task scheduling client with job execution and retry mechanisms</description>
@@ -28,6 +28,7 @@
         <module>silence-job-client-common</module>
         <module>silence-job-client-job-core</module>
         <module>silence-job-client-retry-core</module>
+        <module>silence-job-client-executor</module>
     </modules>
 
     <dependencyManagement>
@@ -51,6 +52,11 @@
             <!-- Internal Dependencies -->
             <dependency>
                 <groupId>com.old.silence</groupId>
+                <artifactId>silence-job-client-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.old.silence</groupId>
                 <artifactId>silence-job-client-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -62,6 +68,11 @@
             <dependency>
                 <groupId>com.old.silence</groupId>
                 <artifactId>silence-job-client-retry-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.old.silence</groupId>
+                <artifactId>silence-job-client-executor</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

@@ -1,0 +1,48 @@
+# SilenceJob Client Executor Configuration
+# 独立的客户端执行器应用配置
+
+server:
+  port: 9999
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: silence-job-client-executor
+  profiles:
+    active: dev
+
+# SilenceJob Client Configuration
+silence:
+  job:
+    client:
+      server-url: http://localhost:8098
+      app-name: silence-job-client-executor
+      executor:
+        port: 9999
+        thread-pool-size: 10
+        queue-size: 100
+      retry:
+        enabled: true
+        max-attempts: 3
+      heartbeat:
+        interval: 30s
+        timeout: 10s
+
+# Logging Configuration
+logging:
+  level:
+    com.old.silence.job: INFO
+    org.springframework: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Management Endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
