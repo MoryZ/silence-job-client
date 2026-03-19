@@ -36,7 +36,7 @@ import com.old.silence.job.common.enums.JobTaskType;
 import com.old.silence.job.common.model.JobContext;
 import com.old.silence.job.common.model.SilenceJobRpcResult;
 import com.old.silence.job.common.util.EnvironmentUtils;
-import com.old.silence.job.common.util.NetUtil;
+import com.old.silence.job.common.util.NetUtils;
 
 
 
@@ -179,7 +179,7 @@ public class JobExecutorFutureCallback implements FutureCallback<ExecuteResult> 
                     AlarmContext context = AlarmContext.build()
                             .text(TEXT_MESSAGE_FORMATTER,
                                     EnvironmentUtils.getActiveProfile(),
-                                    NetUtil.getLocalIpStr(),
+                                    NetUtils.getLocalIpStr(),
                                     silenceJobProperties.getNamespace(),
                                     silenceJobProperties.getGroup(),
                                     Instant.now().atZone(ZoneId.systemDefault()).format(DatePattern.NORM_DATETIME_FORMATTER),

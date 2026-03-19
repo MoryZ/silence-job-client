@@ -15,7 +15,7 @@ import com.old.silence.job.common.model.SilenceJobRpcResult;
 import com.old.silence.job.common.dto.ConfigDTO;
 import com.old.silence.job.common.server.dto.RetryTaskDTO;
 import com.old.silence.job.common.util.EnvironmentUtils;
-import com.old.silence.job.common.util.NetUtil;
+import com.old.silence.job.common.util.NetUtils;
 import com.old.silence.job.log.SilenceJobLog;
 
 import java.time.Instant;
@@ -100,7 +100,7 @@ public class SyncReport extends AbstractReport {
                 AlarmContext context = AlarmContext.build()
                         .text(reportErrorTextMessageFormatter,
                                 EnvironmentUtils.getActiveProfile(),
-                                NetUtil.getLocalIpStr(),
+                                NetUtils.getLocalIpStr(),
                                 silenceJobProperties.getNamespace(),
                                 silenceJobProperties.getGroup(),
                                 Instant.now().atZone(ZoneId.systemDefault()).format(formatter),

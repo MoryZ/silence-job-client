@@ -30,7 +30,6 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>33.4.1-jre</version>
             <exclusions>
                 <exclusion>
                     <artifactId>error_prone_annotations</artifactId>

@@ -22,7 +22,7 @@ import com.old.silence.job.common.alarm.SilenceJobAlarmFactory;
 import com.old.silence.job.common.enums.RetryNotifyScene;
 import com.old.silence.job.common.dto.ConfigDTO;
 import com.old.silence.job.common.util.EnvironmentUtils;
-import com.old.silence.job.common.util.NetUtil;
+import com.old.silence.job.common.util.NetUtils;
 import com.old.silence.job.log.SilenceJobLog;
 
 
@@ -192,7 +192,7 @@ public abstract class AbstractRetryStrategies implements RetryStrategy {
                     AlarmContext context = AlarmContext.build()
                             .text(TEXT_MESSAGE_FORMATTER,
                                     EnvironmentUtils.getActiveProfile(),
-                                    NetUtil.getLocalIpStr(),
+                                    NetUtils.getLocalIpStr(),
                                     silenceJobProperties.getNamespace(),
                                     silenceJobProperties.getGroup(),
                                     Instant.now().atZone(ZoneId.systemDefault()).format(formatter),

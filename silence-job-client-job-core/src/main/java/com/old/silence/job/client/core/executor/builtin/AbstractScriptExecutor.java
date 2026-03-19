@@ -5,7 +5,7 @@ import com.old.silence.job.client.common.config.SilenceJobProperties;
 import com.old.silence.job.common.client.dto.ExecuteResult;
 import com.old.silence.job.common.context.SilenceSpringContext;
 import com.old.silence.job.common.exception.SilenceJobInnerExecutorException;
-import com.old.silence.job.common.util.SilenceJobFileUtil;
+import com.old.silence.job.common.util.SilenceJobFileUtils;
 import com.old.silence.job.common.util.SilenceJobSystemUtils;
 import com.old.silence.job.log.SilenceJobLog;
 
@@ -69,7 +69,7 @@ public abstract class AbstractScriptExecutor {
             case SCRIPT_DOWNLOAD_METHOD:
                 // 是否为下载
                 try {
-                    SilenceJobFileUtil.downloadFile(scriptParams.getScriptParams(), script, 5000, 300000);
+                    SilenceJobFileUtils.downloadFile(scriptParams.getScriptParams(), script, 5000, 300000);
                 } catch (IOException e) {
                     throw new SilenceJobInnerExecutorException("[silence-job] Script download failed", e);
                 }
@@ -115,7 +115,7 @@ public abstract class AbstractScriptExecutor {
             File parentDir = script.getParentFile();
             if (!parentDir.exists()) {
                 logInfo("Script directory does not exist, creating: {}", parentDir.getAbsolutePath());
-                SilenceJobFileUtil.mkdirs(parentDir);
+                SilenceJobFileUtils.mkdirs(parentDir);
             }
         } catch (SilenceJobInnerExecutorException e) {
             throw new SilenceJobInnerExecutorException("[silence-job] ensure script directory error", e);

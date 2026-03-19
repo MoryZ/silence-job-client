@@ -13,14 +13,14 @@
     <artifactId>silence-job-client</artifactId>
     <version>1.8.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>SilenceJob Client</name>
+    <name>silence-job-client</name>
     <description>Distributed task scheduling client with job execution and retry mechanisms</description>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <silence-job-common.version>1.0.0</silence-job-common.version>
+        <silence-job-common.version>1.8.0-SNAPSHOT</silence-job-common.version>
     </properties>
 
     <modules>
@@ -49,6 +49,11 @@
                 <artifactId>silence-job-common-client-api</artifactId>
                 <version>${silence-job-common.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.old.silence</groupId>
+                <artifactId>silence-job-common-server-api</artifactId>
+                <version>${silence-job-common.version}</version>
+            </dependency>
             <!-- Internal Dependencies -->
             <dependency>
                 <groupId>com.old.silence</groupId>
@@ -74,6 +79,57 @@
                 <groupId>com.old.silence</groupId>
                 <artifactId>silence-job-client-executor</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <!-- External Libraries -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>33.4.1-jre</version>
+            </dependency>
+            <dependency>
+                <groupId>com.caucho</groupId>
+                <artifactId>hessian</artifactId>
+                <version>4.0.66</version>
+            </dependency>
+            <dependency>
+                <groupId>com.googlecode.aviator</groupId>
+                <artifactId>aviator</artifactId>
+                <version>5.2.7</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.rholder</groupId>
+                <artifactId>guava-retrying</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.17</version>
+            </dependency>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-netty-shaded</artifactId>
+                <version>1.59.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-protobuf</artifactId>
+                <version>1.59.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-stub</artifactId>
+                <version>1.59.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-api</artifactId>
+                <version>1.59.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-util</artifactId>
+                <version>1.59.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

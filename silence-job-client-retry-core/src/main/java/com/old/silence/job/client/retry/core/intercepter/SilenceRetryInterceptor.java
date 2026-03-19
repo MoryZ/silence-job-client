@@ -25,7 +25,7 @@ import com.old.silence.job.common.enums.RetryResultStatus;
 import com.old.silence.job.common.model.SilenceJobHeaders;
 import com.old.silence.job.common.dto.ConfigDTO;
 import com.old.silence.job.common.util.EnvironmentUtils;
-import com.old.silence.job.common.util.NetUtil;
+import com.old.silence.job.common.util.NetUtils;
 import com.old.silence.job.log.SilenceJobLog;
 
 import java.io.Serializable;
@@ -225,7 +225,7 @@ public class SilenceRetryInterceptor implements MethodInterceptor, AfterAdvice, 
                     AlarmContext context = AlarmContext.build()
                             .text(retryErrorMoreThresholdTextMessageFormatter,
                                     EnvironmentUtils.getActiveProfile(),
-                                    NetUtil.getLocalIpStr(),
+                                    NetUtils.getLocalIpStr(),
                                     silenceJobProperties.getNamespace(),
                                     silenceJobProperties.getGroup(),
                                     Instant.now().atZone(ZoneId.systemDefault()).format(formatter),

@@ -17,7 +17,7 @@ import com.old.silence.job.common.enums.HeadersEnum;
 import com.old.silence.job.common.grpc.auto.GrpcResult;
 import com.old.silence.job.common.grpc.auto.GrpcSilenceJobRequest;
 import com.old.silence.job.common.grpc.auto.Metadata;
-import com.old.silence.job.common.util.NetUtil;
+import com.old.silence.job.common.util.NetUtils;
 import com.old.silence.job.log.SilenceJobLog;
 
 import java.io.IOException;
@@ -67,7 +67,7 @@ public final class GrpcChannel {
 
     static {
         PORT = Integer.parseInt(System.getProperty(SILENCE_JOB_CLIENT_PORT, String.valueOf(1789)));
-        HOST = System.getProperty(SILENCE_JOB_CLIENT_HOST, NetUtil.getLocalIpStr());
+        HOST = System.getProperty(SILENCE_JOB_CLIENT_HOST, NetUtils.getLocalIpStr());
     }
 
     /**
