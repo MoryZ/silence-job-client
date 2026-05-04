@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractJobExecutor implements IJobExecutor {
 
     @Override
-    public void jobExecute(JobContext jobContext) {
+    public void execute(JobContext jobContext) {
 
         // 创建可执行的任务
         Integer parallelNum = Optional.ofNullable(jobContext.getParallelNum()).orElse(1);

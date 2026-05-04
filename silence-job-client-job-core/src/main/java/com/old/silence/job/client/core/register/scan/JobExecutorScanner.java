@@ -8,13 +8,15 @@ import com.old.silence.job.client.core.annotation.JobExecutor;
 import com.old.silence.job.client.core.annotation.MapExecutor;
 import com.old.silence.job.client.core.annotation.MergeReduceExecutor;
 import com.old.silence.job.client.core.annotation.ReduceExecutor;
+import com.old.silence.job.client.common.exception.SilenceJobClientException;
+import com.old.silence.job.client.core.executor.AbstractJobExecutor;
 import com.old.silence.job.client.core.cache.JobExecutorInfoCache;
 import com.old.silence.job.client.core.dto.JobArgs;
 import com.old.silence.job.client.core.dto.JobExecutorInfo;
 import com.old.silence.job.client.core.dto.MapArgs;
 import com.old.silence.job.client.core.dto.MergeReduceArgs;
 import com.old.silence.job.client.core.dto.ReduceArgs;
-import com.old.silence.job.client.core.dto.ShardingJobArgs;
+import com.old.silence.job.common.model.JobContext;
 import com.old.silence.job.log.SilenceJobLog;
 
 
@@ -37,7 +39,6 @@ import java.util.Objects;
 
 
 @Component
-
 public class JobExecutorScanner implements Scanner, ApplicationContextAware {
 
     public ApplicationContext applicationContext;
@@ -70,7 +71,7 @@ public class JobExecutorScanner implements Scanner, ApplicationContextAware {
             if (IJobExecutor.class.isAssignableFrom(bean.getClass())) {
                 if (!JobExecutorInfoCache.isExisted(executorClassName)) {
                     jobExecutorInfoList.add(new JobExecutorInfo(executorClassName,
-                            ReflectionUtils.findMethod(bean.getClass(), "jobExecute"),
+                            ReflectionUtils.findMethod(bean.getClass(), "execute", JobContext.class),
                             null, null, null, bean));
                 }
             }
@@ -78,19 +79,17 @@ public class JobExecutorScanner implements Scanner, ApplicationContextAware {
             // 扫描类的注解
             JobExecutor jobExecutor = bean.getClass().getAnnotation(JobExecutor.class);
             if (Objects.nonNull(jobExecutor)) {
+                if (!AbstractJobExecutor.class.isAssignableFrom(bean.getClass())) {
+                    throw new SilenceJobClientException(
+                            "执行器[{}]使用了@JobExecutor类注解，但未继承AbstractJobExecutor。请继承AbstractJobExecutor并重写doJobExecute(JobArgs)，或改为在具体执行方法上使用@JobExecutor",
+                            bean.getClass().getName());
+                }
+
                 String executorName = jobExecutor.name();
                 if (!JobExecutorInfoCache.isExisted(executorName)) {
-                    List<Class<? extends JobArgs>> classes = List.of(ShardingJobArgs.class, JobArgs.class);
-                    Method method = null;
-                    for (Class<? extends JobArgs> clazz : classes) {
-                        method = ReflectionUtils.findMethod(bean.getClass(), jobExecutor.method(), clazz);
-                        if (Objects.nonNull(method)) {
-                            break;
-                        }
-                    }
-
-                    if (method == null) {
-                        method = ReflectionUtils.findMethod(bean.getClass(), jobExecutor.method());
+                    Method method = ReflectionUtils.findMethod(bean.getClass(), "execute", JobContext.class);
+                    if (Objects.isNull(method)) {
+                        throw new SilenceJobClientException("执行器[{}]未找到IJobExecutor#execute(JobContext)实现", bean.getClass().getName());
                     }
 
                     // 扫描MapExecutor、ReduceExecutor、MergeReduceExecutor注解
@@ -149,6 +148,8 @@ public class JobExecutorScanner implements Scanner, ApplicationContextAware {
                     continue;
                 }
 
+                validateJobExecutorMethod(bean.getClass(), executeMethod);
+
                 JobExecutorInfo jobExecutorInfo =
                         new JobExecutorInfo(
                                 jobExecutor.name(),
@@ -166,5 +167,20 @@ public class JobExecutorScanner implements Scanner, ApplicationContextAware {
     @Override
     public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    private void validateJobExecutorMethod(Class<?> beanClass, Method executeMethod) {
+        Class<?>[] parameterTypes = executeMethod.getParameterTypes();
+        if (parameterTypes.length == 0) {
+            return;
+        }
+
+        if (parameterTypes.length == 1 && JobArgs.class.isAssignableFrom(parameterTypes[0])) {
+            return;
+        }
+
+        throw new SilenceJobClientException(
+                "执行器[{}]方法[{}]签名非法。@JobExecutor方法仅支持无参或单个JobArgs入参",
+                beanClass.getName(), executeMethod.getName());
     }
 }

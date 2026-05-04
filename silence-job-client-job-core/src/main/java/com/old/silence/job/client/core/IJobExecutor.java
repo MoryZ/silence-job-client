@@ -9,5 +9,5 @@ import com.old.silence.job.common.model.JobContext;
  */
 public interface IJobExecutor {
 
-    void jobExecute(JobContext jobContext);
+    void execute(JobContext jobContext);
 }

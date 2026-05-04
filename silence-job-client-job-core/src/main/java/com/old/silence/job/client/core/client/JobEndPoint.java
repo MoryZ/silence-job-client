@@ -97,7 +97,7 @@ public class JobEndPoint {
 
             SilenceJobLog.REMOTE.info("批次:[{}] 任务调度成功. ", dispatchJob.getTaskBatchId());
 
-            jobExecutor.jobExecute(jobContext);
+            jobExecutor.execute(jobContext);
 
         } catch (Exception e) {
             SilenceJobLog.REMOTE.error("客户端发生非预期异常. taskBatchId:[{}]", dispatchJob.getTaskBatchId());
