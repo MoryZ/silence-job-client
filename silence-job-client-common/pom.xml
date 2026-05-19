@@ -33,6 +33,13 @@
             <version>3.3.5</version>
             <optional>true</optional>
         </dependency>
+        <!-- Logback 依赖，用于 SilenceLogbackAppender 和 SPI 自动注册 -->
+        <!-- 编译时需要，确保 Logback 类可用 -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.14</version>
+        </dependency>
 
         <!--    libs    -->
         <dependency>

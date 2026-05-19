@@ -1,6 +1,5 @@
 package com.old.silence.job.client.core.log;
 
-
 import com.old.silence.job.client.common.log.report.LogMeta;
 
 import java.math.BigInteger;

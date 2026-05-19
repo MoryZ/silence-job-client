@@ -1,37 +1,26 @@
-/*
- * Copyright (c) 2024 .
- *
- * SilenceJob - 灵活，可靠和快速的分布式任务重试和分布式任务调度平台
- * > ✅️ 可重放，可管控、为提高分布式业务系统一致性的分布式任务重试平台
- * > ✅️ 支持秒级、可中断、可编排的高性能分布式任务调度平台
- *
- * Aizuda/SilenceJob 采用APACHE LICENSE 2.0开源协议，您在使用过程中，需要注意以下几点:
- *
- *
- * 1. 不得修改产品相关代码的源码头注释和出处;
- * 2. 不得应用于危害国家安全、荣誉和利益的行为，不能以任何形式用于非法目的;
- *
- */
 package com.old.silence.job.client.common.appender;
 
 import ch.qos.logback.classic.spi.IThrowableProxy;
-import ch.qos.logback.classic.spi.LoggingEvent;
+import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.StackTraceElementProxy;
 import ch.qos.logback.classic.spi.ThrowableProxyUtil;
 import ch.qos.logback.core.CoreConstants;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
 import org.slf4j.MDC;
+
+import java.util.Objects;
+import java.util.Optional;
+
 import com.old.silence.job.client.common.log.report.LogReportFactory;
 import com.old.silence.job.client.common.log.support.SilenceJobLogManager;
 import com.old.silence.job.client.common.rpc.client.NettyChannel;
 import com.old.silence.job.log.constant.LogFieldConstants;
 import com.old.silence.job.log.dto.LogContentDTO;
 
-import java.util.Objects;
-import java.util.Optional;
-
-
-public class SilenceLogbackAppender<E> extends UnsynchronizedAppenderBase<E> {
+/**
+ * SilenceJob Logback Appender - 将 Job 执行期间的日志上报到服务器
+ */
+public class SilenceLogbackAppender extends UnsynchronizedAppenderBase<ILoggingEvent> {
 
     @Override
     public void start() {
@@ -39,21 +28,22 @@ public class SilenceLogbackAppender<E> extends UnsynchronizedAppenderBase<E> {
     }
 
     @Override
-    protected void append(E eventObject) {
-
-        // Not job context
-        if (!(eventObject instanceof LoggingEvent)
-                || Objects.isNull(SilenceJobLogManager.getLogMeta())
-                || Objects.isNull(MDC.get(LogFieldConstants.MDC_REMOTE))) {
+    protected void append(ILoggingEvent event) {
+        System.err.println("[SilenceLogbackAppender] append called: " + event.getFormattedMessage());
+        
+        if (Objects.isNull(SilenceJobLogManager.getLogMeta())) {
+            System.err.println("[SilenceLogbackAppender] LogMeta is null, skipping.");
+            return;
+        }
+        if (Objects.isNull(MDC.get(LogFieldConstants.MDC_REMOTE))) {
+            System.err.println("[SilenceLogbackAppender] MDC_REMOTE is null, skipping.");
             return;
         }
 
+        System.err.println("[SilenceLogbackAppender] Processing log: " + event.getFormattedMessage());
         MDC.remove(LogFieldConstants.MDC_REMOTE);
+        
         LogContentDTO logContentDTO = new LogContentDTO();
-
-        // Prepare processing
-        ((LoggingEvent) eventObject).prepareForDeferredProcessing();
-        LoggingEvent event = (LoggingEvent) eventObject;
 
         logContentDTO.addTimeStamp(event.getTimeStamp());
         logContentDTO.addLevelField(event.getLevel().levelStr);
@@ -64,21 +54,15 @@ public class SilenceLogbackAppender<E> extends UnsynchronizedAppenderBase<E> {
         logContentDTO.addHostField(NettyChannel.getClientHost());
         logContentDTO.addPortField(NettyChannel.getClientPort());
 
-        // slidingWindow syncReportLog
-        Optional.ofNullable(LogReportFactory.get()).ifPresent(logReport -> logReport.report(logContentDTO));
+        System.err.println("[SilenceLogbackAppender] LogReportFactory.get() = " + LogReportFactory.get());
+        String message = event.getFormattedMessage();
+        Optional.ofNullable(LogReportFactory.get()).ifPresent(logReport -> {
+            System.err.println("[SilenceLogbackAppender] Reporting log: " + message);
+            logReport.report(logContentDTO);
+        });
     }
 
-    private String getThrowableField(LoggingEvent event) {
-        IThrowableProxy iThrowableProxy = event.getThrowableProxy();
-        if (iThrowableProxy != null) {
-            String throwable = getExceptionInfo(iThrowableProxy);
-            throwable += formatThrowable(event.getThrowableProxy().getStackTraceElementProxyArray());
-            return throwable;
-        }
-        return null;
-    }
-
-    private String getLocationField(LoggingEvent event) {
+    private String getLocationField(ILoggingEvent event) {
         StackTraceElement[] caller = event.getCallerData();
         if (caller != null && caller.length > 0) {
             return caller[0].toString();
@@ -86,7 +70,19 @@ public class SilenceLogbackAppender<E> extends UnsynchronizedAppenderBase<E> {
         return null;
     }
 
+    private String getThrowableField(ILoggingEvent event) {
+        IThrowableProxy iThrowableProxy = event.getThrowableProxy();
+        if (iThrowableProxy == null) {
+            return null;
+        }
+        return getExceptionInfo(iThrowableProxy) +
+                formatThrowable(iThrowableProxy.getStackTraceElementProxyArray());
+    }
+
     private String formatThrowable(StackTraceElementProxy[] stackTraceElementProxyArray) {
+        if (stackTraceElementProxyArray == null) {
+            return "";
+        }
         StringBuilder builder = new StringBuilder();
         int stackDeep = 0;
         for (StackTraceElementProxy step : stackTraceElementProxyArray) {
@@ -94,7 +90,6 @@ public class SilenceLogbackAppender<E> extends UnsynchronizedAppenderBase<E> {
             String string = step.toString();
             builder.append(CoreConstants.TAB).append(string);
             ThrowableProxyUtil.subjoinPackagingData(builder, step);
-            // 最多显示30行
             if (++stackDeep >= 30) {
                 break;
             }

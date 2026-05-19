@@ -30,10 +30,10 @@ public class SilenceJobCloseListener implements ApplicationListener<ContextClose
 
     @Override
     public void onApplicationEvent(ContextClosedEvent event) {
-        log.info("silence-job client about to shutdown v{}", "v1.8");
+        log.info("silence-job client about to shutdown v{}", "1.8");
         SilenceSpringContext.getContext().publishEvent(new SilenceClientClosingEvent());
         lifecycleList.forEach(Lifecycle::close);
         SilenceSpringContext.getContext().publishEvent(new SilenceClientClosedEvent());
-        log.info("silence-job client closed successfully v{}", "v1.8");
+        log.info("silence-job client closed successfully v{}", "1.8");
     }
 }

@@ -1,0 +1,440 @@
+{
+  "groups": [
+    {
+      "name": "silence-job",
+      "type": "com.old.silence.job.client.common.config.SilenceJobProperties",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties"
+    },
+    {
+      "name": "silence-job.server",
+      "sourceMethod": "getServer()",
+      "type": "com.old.silence.job.client.common.config.SilenceJobProperties$ServerConfig",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties"
+    },
+    {
+      "name": "silence-job.log-sliding-window",
+      "sourceMethod": "getLogSlidingWindow()",
+      "type": "com.old.silence.job.client.common.config.SilenceJobProperties$LogSlidingWindowConfig",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties"
+    },
+    {
+      "name": "silence-job.retry",
+      "sourceMethod": "getRetry()",
+      "type": "com.old.silence.job.client.common.config.SilenceJobProperties$Retry",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties"
+    },
+    {
+      "name": "silence-job.retry.report-sliding-window",
+      "sourceMethod": "getRetry().getReportSlidingWindow()",
+      "type": "com.old.silence.job.client.common.config.SilenceJobProperties$SlidingWindowConfig",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$Retry"
+    },
+    {
+      "name": "silence-job.retry.dispatcher-thread-pool",
+      "sourceMethod": "getRetry().getDispatcherThreadPool()",
+      "type": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$Retry"
+    },
+    {
+      "name": "silence-job.client-rpc",
+      "sourceMethod": "getClientRpc()",
+      "type": "com.old.silence.job.client.common.config.SilenceJobProperties$RpcClientProperties",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties"
+    },
+    {
+      "name": "silence-job.server-rpc",
+      "sourceMethod": "getServerRpc()",
+      "type": "com.old.silence.job.client.common.config.SilenceJobProperties$RpcServerProperties",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties"
+    },
+    {
+      "name": "silence-job.server-rpc.dispatcher-tp",
+      "sourceMethod": "getServerRpc().getDispatcherTp()",
+      "type": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$RpcServerProperties"
+    },
+    {
+      "name": "silence-job.client-rpc.client-tp",
+      "sourceMethod": "getClientRpc().getClientTp()",
+      "type": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$RpcClientProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "silence-job.namespace",
+      "type": "java.lang.String",
+      "description": "命名空间ID，若不填则默认为默认命名空间",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties"
+    },
+    {
+      "name": "silence-job.group",
+      "type": "java.lang.String",
+      "description": "服务端对应的group",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties"
+    },
+    {
+      "name": "silence-job.token",
+      "type": "java.lang.String",
+      "description": "令牌，若不填则默认为默认token",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties"
+    },
+    {
+      "name": "silence-job.host",
+      "type": "java.lang.String",
+      "description": "指定客户端IP，默认取本地IP",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties"
+    },
+    {
+      "name": "silence-job.port",
+      "type": "java.lang.Integer",
+      "defaultValue": "17889",
+      "description": "指定客户端端口",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties"
+    },
+    {
+      "name": "silence-job.rpc-type",
+      "type": "com.old.silence.job.common.enums.RpcType",
+      "defaultValue": "GRPC",
+      "description": "RPC类型",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties"
+    },
+    {
+      "name": "silence-job.workspace",
+      "type": "java.lang.String",
+      "description": "客户端脚本存储位置",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties"
+    },
+    {
+      "name": "silence-job.server.host",
+      "type": "java.lang.String",
+      "defaultValue": "127.0.0.1",
+      "description": "服务端的地址，若服务端集群部署则此处配置域名",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ServerConfig"
+    },
+    {
+      "name": "silence-job.server.port",
+      "type": "java.lang.Integer",
+      "defaultValue": "17888",
+      "description": "服务端netty的端口号",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ServerConfig"
+    },
+    {
+      "name": "silence-job.log-sliding-window.total-threshold",
+      "type": "java.lang.Integer",
+      "defaultValue": "50",
+      "description": "日志滑动窗口总量阈值，达到此数量立即发送",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$LogSlidingWindowConfig"
+    },
+    {
+      "name": "silence-job.log-sliding-window.window-total-threshold",
+      "type": "java.lang.Integer",
+      "defaultValue": "150",
+      "description": "日志滑动窗口数量预警阈值",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$LogSlidingWindowConfig"
+    },
+    {
+      "name": "silence-job.log-sliding-window.duration",
+      "type": "java.lang.Long",
+      "defaultValue": "5",
+      "description": "日志滑动窗口时间长度",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$LogSlidingWindowConfig"
+    },
+    {
+      "name": "silence-job.log-sliding-window.chrono-unit",
+      "type": "java.time.temporal.ChronoUnit",
+      "defaultValue": "SECONDS",
+      "description": "日志滑动窗口时间单位",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$LogSlidingWindowConfig"
+    },
+    {
+      "name": "silence-job.retry.report-sliding-window.total-threshold",
+      "type": "java.lang.Integer",
+      "defaultValue": "50",
+      "description": "重试滑动窗口总量阈值",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$SlidingWindowConfig"
+    },
+    {
+      "name": "silence-job.retry.report-sliding-window.window-total-threshold",
+      "type": "java.lang.Integer",
+      "defaultValue": "150",
+      "description": "重试滑动窗口数量预警阈值",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$SlidingWindowConfig"
+    },
+    {
+      "name": "silence-job.retry.report-sliding-window.duration",
+      "type": "java.lang.Long",
+      "defaultValue": "10",
+      "description": "重试滑动窗口时间长度",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$SlidingWindowConfig"
+    },
+    {
+      "name": "silence-job.retry.report-sliding-window.chrono-unit",
+      "type": "java.time.temporal.ChronoUnit",
+      "defaultValue": "SECONDS",
+      "description": "重试滑动窗口时间单位",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$SlidingWindowConfig"
+    },
+    {
+      "name": "silence-job.retry.dispatcher-thread-pool.core-pool-size",
+      "type": "java.lang.Integer",
+      "defaultValue": "32",
+      "description": "重试调度线程池核心线程数",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    },
+    {
+      "name": "silence-job.retry.dispatcher-thread-pool.maximum-pool-size",
+      "type": "java.lang.Integer",
+      "defaultValue": "32",
+      "description": "重试调度线程池最大线程数",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    },
+    {
+      "name": "silence-job.retry.dispatcher-thread-pool.keep-alive-time",
+      "type": "java.lang.Long",
+      "defaultValue": "1",
+      "description": "重试调度线程池线程存活时间",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    },
+    {
+      "name": "silence-job.retry.dispatcher-thread-pool.time-unit",
+      "type": "java.util.concurrent.TimeUnit",
+      "defaultValue": "SECONDS",
+      "description": "重试调度线程池线程存活时间单位",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    },
+    {
+      "name": "silence-job.retry.dispatcher-thread-pool.queue-capacity",
+      "type": "java.lang.Integer",
+      "defaultValue": "10000",
+      "description": "重试调度线程池队列容量",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    },
+    {
+      "name": "silence-job.client-rpc.max-inbound-message-size",
+      "type": "java.lang.Integer",
+      "defaultValue": "10485760",
+      "description": "客户端RPC最大入站消息大小（字节）",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$RpcClientProperties"
+    },
+    {
+      "name": "silence-job.client-rpc.keep-alive-time",
+      "type": "java.time.Duration",
+      "defaultValue": "PT2H",
+      "description": "客户端RPC保活时间",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$RpcClientProperties"
+    },
+    {
+      "name": "silence-job.client-rpc.keep-alive-timeout",
+      "type": "java.time.Duration",
+      "defaultValue": "PT20S",
+      "description": "客户端RPC保活超时时间",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$RpcClientProperties"
+    },
+    {
+      "name": "silence-job.client-rpc.permit-keep-alive-time",
+      "type": "java.time.Duration",
+      "defaultValue": "PT5M",
+      "description": "客户端RPC允许的保活时间",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$RpcClientProperties"
+    },
+    {
+      "name": "silence-job.client-rpc.client-tp.core-pool-size",
+      "type": "java.lang.Integer",
+      "defaultValue": "16",
+      "description": "客户端RPC线程池核心线程数",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    },
+    {
+      "name": "silence-job.client-rpc.client-tp.maximum-pool-size",
+      "type": "java.lang.Integer",
+      "defaultValue": "16",
+      "description": "客户端RPC线程池最大线程数",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    },
+    {
+      "name": "silence-job.client-rpc.client-tp.keep-alive-time",
+      "type": "java.lang.Long",
+      "defaultValue": "1",
+      "description": "客户端RPC线程池线程存活时间",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    },
+    {
+      "name": "silence-job.client-rpc.client-tp.time-unit",
+      "type": "java.util.concurrent.TimeUnit",
+      "defaultValue": "SECONDS",
+      "description": "客户端RPC线程池线程存活时间单位",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    },
+    {
+      "name": "silence-job.client-rpc.client-tp.queue-capacity",
+      "type": "java.lang.Integer",
+      "defaultValue": "10000",
+      "description": "客户端RPC线程池队列容量",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    },
+    {
+      "name": "silence-job.server-rpc.max-inbound-message-size",
+      "type": "java.lang.Integer",
+      "defaultValue": "10485760",
+      "description": "服务端RPC最大入站消息大小（字节）",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$RpcServerProperties"
+    },
+    {
+      "name": "silence-job.server-rpc.keep-alive-time",
+      "type": "java.time.Duration",
+      "defaultValue": "PT2H",
+      "description": "服务端RPC保活时间",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$RpcServerProperties"
+    },
+    {
+      "name": "silence-job.server-rpc.keep-alive-timeout",
+      "type": "java.time.Duration",
+      "defaultValue": "PT20S",
+      "description": "服务端RPC保活超时时间",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$RpcServerProperties"
+    },
+    {
+      "name": "silence-job.server-rpc.permit-keep-alive-time",
+      "type": "java.time.Duration",
+      "defaultValue": "PT5M",
+      "description": "服务端RPC允许的保活时间",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$RpcServerProperties"
+    },
+    {
+      "name": "silence-job.server-rpc.dispatcher-tp.core-pool-size",
+      "type": "java.lang.Integer",
+      "defaultValue": "16",
+      "description": "服务端RPC调度线程池核心线程数",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    },
+    {
+      "name": "silence-job.server-rpc.dispatcher-tp.maximum-pool-size",
+      "type": "java.lang.Integer",
+      "defaultValue": "16",
+      "description": "服务端RPC调度线程池最大线程数",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    },
+    {
+      "name": "silence-job.server-rpc.dispatcher-tp.keep-alive-time",
+      "type": "java.lang.Long",
+      "defaultValue": "1",
+      "description": "服务端RPC调度线程池线程存活时间",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    },
+    {
+      "name": "silence-job.server-rpc.dispatcher-tp.time-unit",
+      "type": "java.util.concurrent.TimeUnit",
+      "defaultValue": "SECONDS",
+      "description": "服务端RPC调度线程池线程存活时间单位",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    },
+    {
+      "name": "silence-job.server-rpc.dispatcher-tp.queue-capacity",
+      "type": "java.lang.Integer",
+      "defaultValue": "10000",
+      "description": "服务端RPC调度线程池队列容量",
+      "sourceType": "com.old.silence.job.client.common.config.SilenceJobProperties$ThreadPoolConfig"
+    }
+  ],
+  "hints": [
+    {
+      "name": "silence-job.rpc-type",
+      "values": [
+        {
+          "value": "GRPC",
+          "description": "使用gRPC协议"
+        },
+        {
+          "value": "NETTY",
+          "description": "使用Netty协议"
+        }
+      ]
+    },
+    {
+      "name": "silence-job.log-sliding-window.chrono-unit",
+      "values": [
+        {
+          "value": "SECONDS",
+          "description": "秒"
+        },
+        {
+          "value": "MILLIS",
+          "description": "毫秒"
+        },
+        {
+          "value": "MINUTES",
+          "description": "分钟"
+        }
+      ]
+    },
+    {
+      "name": "silence-job.retry.report-sliding-window.chrono-unit",
+      "values": [
+        {
+          "value": "SECONDS",
+          "description": "秒"
+        },
+        {
+          "value": "MILLIS",
+          "description": "毫秒"
+        },
+        {
+          "value": "MINUTES",
+          "description": "分钟"
+        }
+      ]
+    },
+    {
+      "name": "silence-job.retry.dispatcher-thread-pool.time-unit",
+      "values": [
+        {
+          "value": "SECONDS",
+          "description": "秒"
+        },
+        {
+          "value": "MILLIS",
+          "description": "毫秒"
+        },
+        {
+          "value": "MINUTES",
+          "description": "分钟"
+        }
+      ]
+    },
+    {
+      "name": "silence-job.client-rpc.client-tp.time-unit",
+      "values": [
+        {
+          "value": "SECONDS",
+          "description": "秒"
+        },
+        {
+          "value": "MILLIS",
+          "description": "毫秒"
+        },
+        {
+          "value": "MINUTES",
+          "description": "分钟"
+        }
+      ]
+    },
+    {
+      "name": "silence-job.server-rpc.dispatcher-tp.time-unit",
+      "values": [
+        {
+          "value": "SECONDS",
+          "description": "秒"
+        },
+        {
+          "value": "MILLIS",
+          "description": "毫秒"
+        },
+        {
+          "value": "MINUTES",
+          "description": "分钟"
+        }
+      ]
+    }
+  ]
+}

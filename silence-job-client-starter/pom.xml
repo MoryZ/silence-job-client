@@ -21,6 +21,13 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         
+        <!-- Logback 依赖，用于支持 SilenceLogbackAppender SPI 自动注册 -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.14</version>
+        </dependency>
+        
         <!-- SilenceJob Client Modules -->
         <dependency>
             <groupId>com.old.silence</groupId>

@@ -1,6 +1,4 @@
-
 package com.old.silence.job.client.common.appender;
-
 
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
@@ -56,11 +54,7 @@ public class SilenceLog4jAppender extends AppenderSkeleton {
     }
 
     private String getThrowableField(LoggingEvent event) {
-        String throwable = getThrowableStr(event);
-        if (throwable != null) {
-            return throwable;
-        }
-        return null;
+        return getThrowableStr(event);
     }
 
     private String getThrowableStr(LoggingEvent event) {
@@ -75,7 +69,7 @@ public class SilenceLog4jAppender extends AppenderSkeleton {
             if (isFirst) {
                 isFirst = false;
             } else {
-                sb.append(System.getProperty("line.separator"));
+                sb.append(System.lineSeparator());
             }
             sb.append(s);
             // 最多显示30行

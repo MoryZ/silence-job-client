@@ -55,9 +55,41 @@ public class GrpcClientInvokeHandler<R extends ApiResult<Object>> implements Inv
         StopWatch sw = new StopWatch();
         Mapping annotation = method.getAnnotation(Mapping.class);
 
+        // 调试日志：打印实际发送的参数
+        SilenceJobLog.LOCAL.info("=== GrpcClient Debug: method=[{}], args=[{}], args.length=[{}]", 
+            method.getName(), JSON.toJSONString(args), args != null ? args.length : "null");
+        if (args != null && args.length > 0) {
+            SilenceJobLog.LOCAL.info("=== GrpcClient Debug: args[0] class=[{}], isArray=[{}]", 
+                args[0].getClass().getName(), args[0].getClass().isArray());
+            // 如果是数组，递归检查
+            if (args[0].getClass().isArray()) {
+                Object[] innerArray = (Object[]) args[0];
+                SilenceJobLog.LOCAL.info("=== GrpcClient Debug: args[0] length=[{}]", innerArray.length);
+                if (innerArray.length > 0) {
+                    SilenceJobLog.LOCAL.info("=== GrpcClient Debug: args[0][0] class=[{}]", innerArray[0].getClass().getName());
+                }
+            }
+            SilenceJobLog.LOCAL.info("=== GrpcClient Debug: args[0] toString=[{}]", args[0].toString());
+        }
+
         long reqId = newId();
-        ListenableFuture<GrpcResult> future = GrpcChannel.sendOfUnary(annotation.path(), JSON.toJSONString(args),
-            reqId);
+        // 处理 args 为 null 或空数组的情况
+        String body;
+        if (args == null || args.length == 0) {
+            body = "[]";
+        } else {
+            // 检查是否所有元素都是 null，如果是则发送空数组
+            boolean allNull = true;
+            for (Object arg : args) {
+                if (arg != null) {
+                    allNull = false;
+                    break;
+                }
+            }
+            body = allNull ? "[]" : JSON.toJSONString(args);
+        }
+        SilenceJobLog.LOCAL.info("=== GrpcClient Debug: body=[{}]", body);
+        ListenableFuture<GrpcResult> future = GrpcChannel.sendOfUnary(annotation.path(), body, reqId);
         SilenceJobLog.LOCAL.debug("request complete requestId:[{}] 耗时:[{}ms]", sw.getTotalTimeMillis(), reqId);
         if (future == null) {
             return (R) new SilenceJobRpcResult(500, "future is nulll", null, reqId);

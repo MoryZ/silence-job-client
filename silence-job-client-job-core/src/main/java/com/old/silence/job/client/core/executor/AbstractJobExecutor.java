@@ -1,5 +1,6 @@
 package com.old.silence.job.client.core.executor;
 
+import org.slf4j.MDC;
 import com.old.silence.job.client.common.log.support.SilenceJobLogManager;
 import com.old.silence.job.client.core.IJobExecutor;
 import com.old.silence.job.client.core.cache.FutureCache;
@@ -13,6 +14,7 @@ import com.old.silence.job.client.core.log.JobLogMeta;
 import com.old.silence.job.client.core.timer.StopTaskTimerTask;
 import com.old.silence.job.client.core.timer.TimerManager;
 import com.old.silence.job.common.client.dto.ExecuteResult;
+import com.old.silence.job.log.constant.LogFieldConstants;
 import com.old.silence.job.log.enums.LogTypeEnum;
 import com.old.silence.job.common.enums.JobTaskType;
 import com.old.silence.job.common.enums.MapReduceStage;
@@ -77,12 +79,13 @@ public abstract class AbstractJobExecutor implements IJobExecutor {
             jobArgs.setJobId(jobContext.getJobId());
 
             try {
-                // 初始化调度信息（日志上报LogUtil）
+                // 关键：在子线程中初始化日志上下文，而不是依赖主线程设置的
                 initLogContext(jobContext);
                 return doJobExecute(jobArgs);
             } finally {
                 SilenceJobLogManager.removeLogMeta();
                 JobContextManager.removeJobContext();
+                MDC.remove(LogFieldConstants.MDC_REMOTE);
             }
 
         });
@@ -92,6 +95,10 @@ public abstract class AbstractJobExecutor implements IJobExecutor {
     }
 
     private void initLogContext(JobContext jobContext) {
+
+        // 关键：设置 MDC，让 Appender 能够捕获日志
+        MDC.put(LogFieldConstants.MDC_REMOTE, "true");
+
         JobLogMeta logMeta = new JobLogMeta();
         logMeta.setNamespaceId(jobContext.getNamespaceId());
         logMeta.setTaskId(jobContext.getTaskId());
