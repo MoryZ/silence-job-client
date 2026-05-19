@@ -5,6 +5,7 @@ import cn.hutool.http.HttpResponse;
 import org.apache.commons.lang3.StringUtils;
 import com.alibaba.fastjson2.JSON;
 import com.old.silence.job.client.common.config.SilenceJobProperties;
+import com.old.silence.job.client.core.executor.AbstractJobExecutor;
 import com.old.silence.job.common.client.dto.ExecuteResult;
 import com.old.silence.job.common.context.SilenceSpringContext;
 import com.old.silence.job.common.exception.SilenceJobInnerExecutorException;
@@ -17,7 +18,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 
-public abstract class AbstractHttpExecutor {
+public abstract class AbstractHttpExecutor extends AbstractJobExecutor {
 
     private static final int DEFAULT_TIMEOUT = 60;
     public static final SilenceJobProperties SILENCE_JOB_PROPERTIES = SilenceSpringContext.getBean(SilenceJobProperties.class);

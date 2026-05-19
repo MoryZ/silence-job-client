@@ -16,7 +16,8 @@ import java.util.Objects;
 @JobExecutor(name = "silenceJobHttpExecutor")
 public class SilenceJobHttpExecutor extends AbstractHttpExecutor {
 
-    public ExecuteResult jobExecute(JobArgs jobArgs) {
+    @Override
+    public ExecuteResult doJobExecute(JobArgs jobArgs) {
         Object jobParams = jobArgs.getJobParams();
         HttpParams httpParams = JSON.parseObject((String) jobParams, HttpParams.class);
         if (Objects.nonNull(jobArgs.getWfContext())) {

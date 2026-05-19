@@ -11,7 +11,8 @@ import org.springframework.stereotype.Component;
 @JobExecutor(name = "silenceJobPowerShellJobExecutor")
 public class SilenceJobPowerShellJobExecutor extends AbstractPowerShellExecutor {
 
-    public ExecuteResult jobExecute(JobArgs jobArgs) {
+    @Override
+    public ExecuteResult doJobExecute(JobArgs jobArgs) {
         Object jobParams = jobArgs.getJobParams();
         AbstractScriptExecutor.ScriptParams scriptParams = JSON.parseObject((String) jobParams, AbstractScriptExecutor.ScriptParams.class);
         return process(jobArgs.getJobId(), scriptParams);

@@ -2,6 +2,7 @@ package com.old.silence.job.client.core.executor.builtin;
 
 import cn.hutool.core.util.StrUtil;
 import com.old.silence.job.client.common.config.SilenceJobProperties;
+import com.old.silence.job.client.core.executor.AbstractJobExecutor;
 import com.old.silence.job.common.client.dto.ExecuteResult;
 import com.old.silence.job.common.context.SilenceSpringContext;
 import com.old.silence.job.common.exception.SilenceJobInnerExecutorException;
@@ -18,7 +19,7 @@ import java.nio.file.Files;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public abstract class AbstractScriptExecutor {
+public abstract class AbstractScriptExecutor extends AbstractJobExecutor {
 
     protected static final String SH_SHELL = "/bin/sh";
 
