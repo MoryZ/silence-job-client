@@ -29,17 +29,17 @@ public class SilenceJobStartListener implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         if (isStarted) {
-            SilenceJobLog.LOCAL.info("silence-job client already started v{}", "1.8");
+            SilenceJobLog.LOCAL.info("silence-job client already started {}", "v1.8");
             return;
         }
 
         SilenceJobLog.LOCAL.info(String.valueOf(MessageFormatter.format(SystemConstants.LOGO, "1.8")));
-        SilenceJobLog.LOCAL.info("silence-job client is preparing to start... v{}", "1.8");
+        SilenceJobLog.LOCAL.info("silence-job client is preparing to start... {}", "v1.8");
         SilenceSpringContext.getContext().publishEvent(new SilenceClientStartingEvent());
         lifecycleList.forEach(Lifecycle::start);
         SilenceSpringContext.getContext().publishEvent(new SilenceClientStartedEvent());
         isStarted = true;
-        SilenceJobLog.LOCAL.info("silence-job client started successfully v{}", "v1.8");
+        SilenceJobLog.LOCAL.info("silence-job client started successfully {}", "v1.8");
     }
 
 }
