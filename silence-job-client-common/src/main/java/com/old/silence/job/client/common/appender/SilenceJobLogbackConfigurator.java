@@ -67,13 +67,11 @@ public class SilenceJobLogbackConfigurator implements Configurator {
 
     @Override
     public ExecutionStatus configure(LoggerContext loggerContext) {
-        System.err.println("[SilenceJobLogbackConfigurator] configure() called!");
         setContext(loggerContext);
         
         // 检查是否已经注册过
         Logger rootLogger = loggerContext.getLogger(Logger.ROOT_LOGGER_NAME);
-        System.err.println("[SilenceJobLogbackConfigurator] RootLogger effective level: " + rootLogger.getEffectiveLevel());
-        
+
         if (rootLogger.getAppender("SILENCE_JOB_APPENDER") != null) {
             addInfo("SilenceLogbackAppender already registered, skipping.");
             return ExecutionStatus.NEUTRAL;
@@ -81,17 +79,14 @@ public class SilenceJobLogbackConfigurator implements Configurator {
 
         try {
             addInfo("Setting up SilenceLogbackAppender...");
-            System.err.println("[SilenceJobLogbackConfigurator] Creating SilenceLogbackAppender...");
-            
+
             SilenceLogbackAppender appender = new SilenceLogbackAppender();
             appender.setContext(loggerContext);
             appender.setName("SILENCE_JOB_APPENDER");
             appender.start();
             
-            System.err.println("[SilenceJobLogbackConfigurator] Appender started, adding to root logger...");
             rootLogger.addAppender(appender);
             
-            System.err.println("[SilenceJobLogbackConfigurator] Appender registered successfully!");
             addInfo("SilenceLogbackAppender registered successfully.");
         } catch (Exception e) {
             addError("Failed to register SilenceLogbackAppender", e);

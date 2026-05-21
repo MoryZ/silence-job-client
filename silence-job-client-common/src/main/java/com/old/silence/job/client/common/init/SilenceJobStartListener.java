@@ -33,7 +33,7 @@ public class SilenceJobStartListener implements ApplicationRunner {
             return;
         }
 
-        System.out.println(MessageFormatter.format(SystemConstants.LOGO, "1.8"));
+        SilenceJobLog.LOCAL.info(String.valueOf(MessageFormatter.format(SystemConstants.LOGO, "1.8")));
         SilenceJobLog.LOCAL.info("silence-job client is preparing to start... v{}", "1.8");
         SilenceSpringContext.getContext().publishEvent(new SilenceClientStartingEvent());
         lifecycleList.forEach(Lifecycle::start);

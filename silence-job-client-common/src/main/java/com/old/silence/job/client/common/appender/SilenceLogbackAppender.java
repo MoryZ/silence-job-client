@@ -29,18 +29,14 @@ public class SilenceLogbackAppender extends UnsynchronizedAppenderBase<ILoggingE
 
     @Override
     protected void append(ILoggingEvent event) {
-        System.err.println("[SilenceLogbackAppender] append called: " + event.getFormattedMessage());
-        
+
         if (Objects.isNull(SilenceJobLogManager.getLogMeta())) {
-            System.err.println("[SilenceLogbackAppender] LogMeta is null, skipping.");
             return;
         }
         if (Objects.isNull(MDC.get(LogFieldConstants.MDC_REMOTE))) {
-            System.err.println("[SilenceLogbackAppender] MDC_REMOTE is null, skipping.");
             return;
         }
 
-        System.err.println("[SilenceLogbackAppender] Processing log: " + event.getFormattedMessage());
         MDC.remove(LogFieldConstants.MDC_REMOTE);
         
         LogContentDTO logContentDTO = new LogContentDTO();
@@ -54,10 +50,8 @@ public class SilenceLogbackAppender extends UnsynchronizedAppenderBase<ILoggingE
         logContentDTO.addHostField(NettyChannel.getClientHost());
         logContentDTO.addPortField(NettyChannel.getClientPort());
 
-        System.err.println("[SilenceLogbackAppender] LogReportFactory.get() = " + LogReportFactory.get());
         String message = event.getFormattedMessage();
         Optional.ofNullable(LogReportFactory.get()).ifPresent(logReport -> {
-            System.err.println("[SilenceLogbackAppender] Reporting log: " + message);
             logReport.report(logContentDTO);
         });
     }
